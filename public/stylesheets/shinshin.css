@@ -1,0 +1,106 @@
+
+/* generic style */
+body {
+  padding: 0px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+  /* cursor on the item */
+  .mouseover_item {
+    background-color: green;
+  }
+
+  /* the item is active (member info is showing up) */
+  .active_item {
+    background-color: yellow;
+  }
+
+  /* header */
+	#header {
+		background: transparent url('../images/header-bgs.jpg') scroll no-repeat;
+		margin:0;
+    padding:0px 0px 0px 0px;
+	}
+
+  #tab_panel {
+    position: relative;
+    background: url('../images/body-bgss.jpg');
+    padding-left: 14px;
+    padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 14px;
+  }
+
+  #member_container {
+    display: block;
+    padding: 4px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border: 2px solid green;
+    border-radius: 10px;
+    position: absolute;
+    background: url('../images/paper.png');
+  }
+
+  #members {
+    display: block;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 100px;  /* will be set dynamically */
+  }
+
+  /* active tab background */
+  .ui-tabs .ui-tabs-nav .ui-state-active {
+    background: green;
+  }
+  /* active tab text color */
+  .ui-tabs .ui-tabs-nav .ui-state-active .ui-tabs-anchor {
+    color: #ffffff;
+    font-weight: bold;
+  }
+
+  .ui-tabs ul {
+    padding-left: 1em;
+    list-style-type: circle;
+  }
+
+  .member {
+    line-height: 140%;
+  }
+
+  #member_info_container {
+    position: absolute;
+    padding: 1em;
+    width: 0px;
+    height: 0px;
+    border: 2px solid green;
+    border-radius: 10px;
+    background: #ffffff;
+  }
+
+  #member_info {
+    padding: 1em;
+    position: absolute;
+    overflow: auto;
+  }
+
+  #member_title {
+    padding: 1em;
+    font-size: 200%;
+    text-align: center;
+  }
+
+  #member_photo {
+    padding-left: 0em;
+    padding-top: 0.4em;
+    padding-right: 1em;
+    padding-bottom: 1em;
+    width: 10em;
+  }
