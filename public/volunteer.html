@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+ <heaD>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+ </head>
+<script>
+    /**
+        settings: ajax settings
+        callback: function(textStatus, data)
+    */
+    function uploadFiles(settings, callback) {
+        var opt = {
+            dataType: 'json',
+            crossDomain: true,
+            processData: false,
+            contentType: false,
+            success: function(data, textStatus, jqXHR)
+            {
+                callback(textStatus, data);
+            },
+            error: function(jqXHR, textStatus, errorThrown)
+            {
+                callback(textStatus, null);
+            }
+        };
+        var data = new FormData();
+        if ('type' in settings) {
+            opt["type"] = settings.type; 
+        }
+        if ('url' in settings) {
+            opt["url"] = settings.url;
+        }
+        if ('files' in settings) {
+            $.each(settings.files, function(key, value) {
+                data.append(key, value);
+            });
+            opt["data"] = data;
+        }
+        $.ajax(opt);
+    }
+
+    function prepareUpload(event) {
+        params = {
+            files: event.target.files,
+            type: $('#formImage').attr('method'),
+            url: $('#formImage').attr('action')
+        }
+        uploadFiles(params, function(status, data) {
+            if (status == 'success') {
+                // show uploaded image
+                $('#uploadedImage').attr('src', data.url);
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        $('#formImage').on('change', prepareUpload);
+    })
+
+</script>
+<body>
+<form id="formImage" action="/upload" enctype="multipart/form-data" method="post">
+  <a href="#" onclick="document.getElementById('fileID').click(); return false;" />Upload Image</a>
+  <input type="file" id="fileID" style="visibility: hidden;" />
+</form>
+<img id="uploadedImage" src="" width="100" height="100" border="1"/>
+</body>
+</html>

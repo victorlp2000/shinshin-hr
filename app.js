@@ -5,6 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var formidable = require('formidable'),
+    util = require('util'),
+    fs   = require('fs-extra');
+
 var routes = require('./routes/index');
 var dbapi = require('./routes/dbapi');
 
@@ -21,9 +25,38 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(qt.static(__dirname + "/"));
 
 app.use('/', routes);
 app.use('/api', dbapi);
+
+app.post('/upload', function(req, res) {
+  var form = new formidable.IncomingForm();
+  form.multiples = true;
+  form.parse(req, function(err, fields, files) {
+    // do not response until finished uploading
+  });
+
+  form.on('end', function(fields, files) {
+    console.log("==================");
+    /* Temporary location of our uploaded file */
+    var temp_path = this.openedFiles[0].path;
+    /* The file name of the uploaded file */
+    var file_name = this.openedFiles[0].name;
+    /* Location where we want to copy the uploaded file */
+    var new_location = __dirname + '/public/images/' + file_name;
+
+    fs.copy(temp_path, new_location, function(err) {  
+      if (err) {
+        console.error(err);
+      } else {
+        console.log("success!")
+      }
+    });
+    res.json({"url": "/images/" + file_name});
+  });
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

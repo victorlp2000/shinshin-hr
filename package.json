@@ -1,6 +1,6 @@
 {
-  "name": "shinshin",
-  "version": "0.0.0",
+  "name": "shinshin-hr",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -10,9 +10,27 @@
     "cookie-parser": "~1.3.4",
     "debug": "~2.1.1",
     "express": "~4.12.0",
+    "formidable": "^1.0.17",
+    "fs-extra": "^0.26.2",
     "jade": "~1.9.2",
     "morgan": "~1.5.1",
     "serve-favicon": "~2.2.0",
     "sqlite3": "^3.0.5"
-  }
+  },
+  "description": "list volunteers in shinshin foundation",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/victorlp2000/shinshin-hr"
+  },
+  "keywords": [
+    "shinshin"
+  ],
+  "author": "Victor Liu <victorlp2000@hotmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/victorlp2000/shinshin-hr/issues"
+  },
+  "homepage": "https://github.com/victorlp2000/shinshin-hr"
 }
