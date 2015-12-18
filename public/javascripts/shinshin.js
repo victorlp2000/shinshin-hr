@@ -55,9 +55,11 @@
         $('#member_title').html(title);
 
         //$('#member_description').html(member.description);
-        if (member.description == '') {
+        if (member.description == null) {
             $('#member_description').html('');
         } else {
+            /*
+            // using folder
             $.get('descriptions/' + member.description)
             .done(function(data) {
                 $('#member_description').html(data);
@@ -65,6 +67,8 @@
             .fail(function() {
                 $('#member_description').html(member.description);
             })
+            */
+            $('#member_description').html(member.description);
         }
         var photo = '';
         if (member.photo_file != null && member.photo_file != '') {

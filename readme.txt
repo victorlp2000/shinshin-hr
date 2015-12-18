@@ -2,8 +2,8 @@ interface:
 
 database
 ========
-    table: hr_volunteers
-        - list all volunteers
+    table: hr_volunteer
+        - list all volunteer
         - fields:
             volunteer_id - id for the volunteer
             first_name
@@ -35,7 +35,7 @@ database
                 . this code need to be sortable to keep structure
 
             role
-            volunteer_id (point to id in hr_volunteers)
+            volunteer_id (point to id in hr_volunteer)
 
 page url
 ========

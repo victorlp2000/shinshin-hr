@@ -15,6 +15,14 @@ router.get('/', function(req, res, next) {
         };            
 
         res.sendFile(filename, options);
+	} else if ('photofile' in req.query) {
+		dbapi.getVolunteerPhotoFile(function(err, rows) {
+			if (err) {
+				res.json(err);
+			} else {
+				res.json(rows);
+			}
+		});
 	} else if ('role' in req.query) {
 		dbapi.getVolunteerRole(function(err, rows) {
 			if (err) {

@@ -46,6 +46,7 @@
 				var i = items.push({'category': item.code, 'title': item.role});
 				currentItem = items[i - 1];
 				currentItem['members'] = [];
+				currentItem['codeWidths'] = [1,3,3,3,3];	// default column widths
 				currentItem.members.push(item);
 				continue;
 			}
@@ -55,6 +56,10 @@
 				continue;
 			}
 			// member item
+			if (item.description) {
+				// replace new-line into new paragraph
+				item.description = item.description.replace('\n', '<p>');
+			}
 			currentItem.members.push(item);
 		}
 		//console.log(stringify(items));
