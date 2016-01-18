@@ -1,3 +1,18 @@
+
+steps:
+
+1. create database and tables
+    login to mysql as root:
+        $ mysql -u root -p
+    create database, tables and the user:
+        mysql> source database/mysql_schema.sql
+
+2. load volunteer data from SPM system
+    create hr_volunteer.csv and hr_role.csv
+    goto 'database' folder, run:
+        $ node csv.js
+    it will load both hr_volunteer.csv and hr_role.csv into tables 
+
 interface:
 
 database

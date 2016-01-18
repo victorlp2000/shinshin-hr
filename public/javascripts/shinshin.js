@@ -81,7 +81,7 @@
     // setup jquery-ui tabs
     function setupMenuAndPanels() {
         $("#tabs").tabs({
-            event: 'mouseover',
+            event: 'click',
             activate: function(event, ui) {
                 setMemberInfoSize();
                 setDefaultItem();

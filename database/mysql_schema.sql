@@ -7,17 +7,17 @@
 /*
  *  clean up
  */
-DROP DATABASE IF EXISTS shinshin_hr;
+DROP DATABASE IF EXISTS shinshinop;
 
 /*
  *  create database
  */
-CREATE DATABASE IF NOT EXISTS shinshin_hr CHARACTER SET utf8;
+CREATE DATABASE IF NOT EXISTS shinshinop CHARACTER SET utf8;
 
 /*
  *  create tables
  */
-USE shinshin_hr;
+USE shinshinop;
 
 CREATE TABLE IF NOT EXISTS hr_volunteer (
     id              INTEGER NOT NULL AUTO_INCREMENT,
@@ -45,9 +45,9 @@ SHOW TABLES;
 /*
  *  grant access rights
  */
-/*
-CREATE USER 'vliu'@'localhost' IDENTIFIED BY 'vliupass';
-*/
-GRANT USAGE ON shinshin_hr.* TO vliu@localhost;
-GRANT SELECT,INSERT,DELETE,UPDATE ON shinshin_hr.* TO vliu@localhost;
+
+CREATE USER 'shinshinop'@'localhost' IDENTIFIED BY 'shin2011OpDb';
+
+GRANT USAGE ON shinshinop.* TO shinshinop@localhost;
+GRANT SELECT,INSERT,DELETE,UPDATE ON shinshinop.* TO shinshinop@localhost;
 
