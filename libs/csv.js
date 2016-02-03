@@ -22,7 +22,6 @@ var conn = mysql.createConnection(mysqlAccount);
 **/
 function loadCsv(csvFile, callback) {
 	var parser = parse({delimiter: ','}, function(err, data) {
-    	console.log('data:');
     	callback(data);
 		});
 	fs.createReadStream(csvFile).pipe(parser);
@@ -59,21 +58,20 @@ function deleteRecords(conn, callback) {
 	});
 }
 
-function postInsert(conn) {
+function postInsert(conn, callback) {
 	// insert all volunters
 	var sql = "INSERT INTO hr_role(code, role) VALUES('Z', '义工列表')";
 	executeSql(conn, sql, '', function(err) {
 		if (err)
-			console.log(err);
+			callback(err);
 		else {
 			sql = "INSERT INTO hr_role(code, role, volunteer_id) SELECT 'Z001','',id FROM hr_volunteer";
 			executeSql(conn, sql, '', function(err) {
 				if (err)
-					console.log(err);
+					callback(err);
 				else {
 					conn.commit();
-					console.log('close db');
-					conn.end();
+					callback(null);
 				}
 			});
 		}
@@ -100,38 +98,71 @@ function importCsv(csv, sql, preprocess, callback) {
 	});
 }
 
+function preProcessVolunteerData(data) {
+	console.log('volunteer data: ' + data.length);
+	/*
+	var index;
+	for (index in data) {
+		console.log(data[index]);
+	} */
+}
+
+function preProcessRoleData(data) {
+	console.log('role data: ' + data.length);
+	var index;
+	for (index in data) {
+		if (data[index][2] == '') {
+			data[index][2] = null;
+		}
+		//console.log(data[index]);
+	}
+}
+
 /**
 	reset shinshin hr database, 
 	delete existing data and reload from csv files
 **/
-function resetDB(conn) {
+function resetDB(conn, csv, callback) {
 	deleteRecords(conn, function(err) {
 		if (err)
-			console.log(err);
+			callback(err);
 		else {
-			importCsv(__dirname+'/hr_volunteer.csv', sql_insert_volunteer, null, function(err) {
+			importCsv(csv.volunteer, sql_insert_volunteer, preProcessVolunteerData, function(err) {
 				if (err)
-					console.log(err);
+					callback(err);
 				else {
-					importCsv(__dirname+'/hr_role.csv',sql_insert_role, function(data) {
-						var index;
-						for (index in data) {
-							if (data[index][2] == '') {
-								data[index][2] = null;
-							}
+					importCsv(csv.role, sql_insert_role, preProcessRoleData, function(err) {
+						if (err)
+							callback(err);
+						else {
+							postInsert(conn, function(err) {
+								if (err)
+									callback(err);
+								else
+									callback(null);
+							});
 						}
-					}, function(err) {
-							if (err)
-								console.log(err);
-							else {
-								postInsert(conn);
-							}
-						}
-					);
+					});
 				}
 			});
 		}
 	});
 }
 
-resetDB(conn);
+var csv = {
+	'volunteer': __dirname + '/hr_volunteer.csv',
+	'role': __dirname + '/hr_role.csv'
+}
+
+if (process.argv.length == 4) {
+	csv.volunteer = process.argv[2];
+	csv.role = process.argv[3];
+}
+
+console.log(csv);
+resetDB(conn, csv, function(err) {
+	if (err)
+		console.log(err);
+	console.log('close db');
+	conn.end();
+});
