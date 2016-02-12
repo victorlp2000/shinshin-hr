@@ -73,7 +73,7 @@
         var photo = '';
         if (member.photo_file != null && member.photo_file != '') {
             //photo = 'api?photo=' + member.photo_file;
-            photo = 'photos/' + member.photo_file;
+            photo = 'http://www.shinshinfoundation.org/pucha_photos/' + member.photo_file;
         }
         $('#member_photo').attr('src', photo);
     }

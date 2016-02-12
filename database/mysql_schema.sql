@@ -51,3 +51,14 @@ CREATE USER 'shinshinop'@'localhost' IDENTIFIED BY 'shin2011OpDb';
 GRANT USAGE ON shinshinop.* TO shinshinop@localhost;
 GRANT SELECT,INSERT,DELETE,UPDATE ON shinshinop.* TO shinshinop@localhost;
 
+/*
+update hr_volunteer set hr_volunteer.photo_file = (select vol_survey.profile_photo from vol_survey where hr_volunteer.name = vol_survey.cn limit 1);
+
+update hr_volunteer set hr_volunteer.description = (select vol_survey.p_intro from vol_survey where hr_volunteer.name = vol_survey.cn limit 1);
+
+select * from hr_volunteer into outfile '/tmp/volunteer.csv' fields terminated by ',' enclosed by '"' lines terminated by '\n';
+
+select code, role, volunteer_id from hr_role into outfile '/tmp/role.csv' fields terminated by ',' enclosed by '"' lines terminated by '\n';
+
+*/
+

@@ -100,19 +100,23 @@ function importCsv(csv, sql, preprocess, callback) {
 
 function preProcessVolunteerData(data) {
 	console.log('volunteer data: ' + data.length);
-	/*
-	var index;
-	for (index in data) {
-		console.log(data[index]);
-	} */
+	var row, col;
+	for (row in data) {
+		for (col in data[row]) {
+			if (data[row][col] == '\\N')
+				data[row][col] = null;
+		}
+	}
 }
 
 function preProcessRoleData(data) {
 	console.log('role data: ' + data.length);
-	var index;
-	for (index in data) {
-		if (data[index][2] == '') {
-			data[index][2] = null;
+	var row, col;
+	for (row in data) {
+		for (col in data[row]) {
+			if (data[row][col] == '\\N' || data[row][col] == '') {
+				data[row][col] = null;
+			}
 		}
 		//console.log(data[index]);
 	}
