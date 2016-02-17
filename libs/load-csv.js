@@ -13,8 +13,6 @@ var sql_insert_role = "INSERT INTO hr_role" +
 		"(code, role, volunteer_id)" +
 		"VALUES ?";
 
-var conn = mysql.createConnection(mysqlAccount);
-
 /**
 	load csv file, parse into array object
 	csvFile - filename of the csv file
@@ -84,7 +82,7 @@ function postInsert(conn, callback) {
 	sql - statement to insert into table
 	preprocess - data to be processed before insert
 **/
-function importCsv(csv, sql, preprocess, callback) {
+function importCsv(conn, csv, sql, preprocess, callback) {
 	loadCsv(csv, function(data) {
 		if (preprocess)
 			preprocess(data);
@@ -131,11 +129,11 @@ function resetDB(conn, csv, callback) {
 		if (err)
 			callback(err);
 		else {
-			importCsv(csv.volunteer, sql_insert_volunteer, preProcessVolunteerData, function(err) {
+			importCsv(conn, csv.volunteer, sql_insert_volunteer, preProcessVolunteerData, function(err) {
 				if (err)
 					callback(err);
 				else {
-					importCsv(csv.role, sql_insert_role, preProcessRoleData, function(err) {
+					importCsv(conn, csv.role, sql_insert_role, preProcessRoleData, function(err) {
 						if (err)
 							callback(err);
 						else {
@@ -153,20 +151,31 @@ function resetDB(conn, csv, callback) {
 	});
 }
 
-var csv = {
-	'volunteer': __dirname + '/hr_volunteer.csv',
-	'role': __dirname + '/hr_role.csv'
+function updateHrData(csv, callback) {
+	var conn = mysql.createConnection(mysqlAccount);
+	resetDB(conn, csv, function(err) {
+		if (err) {
+			console.log(err);
+			callback(err);
+		}
+		console.log('close db');
+		conn.end();
+		callback(null, '');
+	});
 }
 
-if (process.argv.length == 4) {
-	csv.volunteer = process.argv[2];
-	csv.role = process.argv[3];
+function verifyHrData(csv, callback) {
+	console.log('verifying...');
+	loadCsv(csv.volunteer, function(data) {
+		console.log('check volunteer data');
+		loadCsv(csv.role, function(data) {
+			console.log('check role data');
+			callback(null);
+		});
+	});
 }
 
-console.log(csv);
-resetDB(conn, csv, function(err) {
-	if (err)
-		console.log(err);
-	console.log('close db');
-	conn.end();
-});
+module.exports = {
+	verifyHrData: verifyHrData,
+	updateHrData: updateHrData
+}

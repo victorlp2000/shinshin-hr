@@ -8,10 +8,12 @@ var bodyParser = require('body-parser');
 var formidable = require('formidable'),
     util = require('util'),
     fs   = require('fs-extra');
+var multer = require('multer');
 
 var routes = require('./routes/index');
 var dbapi = require('./routes/dbapi');
 var hrdata = require('./routes/hrdata');
+var loadcsv = require('./libs/load-csv');
 
 var app = express();
 
@@ -30,35 +32,68 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', dbapi);
-app.use('/hrdata', hrdata);
+//app.use('/hrdata', hrdata);
 
-app.post('/upload', function(req, res) {
-  var form = new formidable.IncomingForm();
-  form.multiples = true;
-  form.parse(req, function(err, fields, files) {
-    // do not response until finished uploading
-  });
-
-  form.on('end', function(fields, files) {
-    console.log("==================");
-    /* Temporary location of our uploaded file */
-    var temp_path = this.openedFiles[0].path;
-    /* The file name of the uploaded file */
-    var file_name = this.openedFiles[0].name;
-    /* Location where we want to copy the uploaded file */
-    var new_location = __dirname + '/public/images/' + file_name;
-
-    fs.copy(temp_path, new_location, function(err) {  
-      if (err) {
-        console.error(err);
-      } else {
-        console.log("success!")
-      }
-    });
-    res.json({"url": "/images/" + file_name});
-  });
+var uploading = multer({
+  dest: '/tmp',
+  inMemory: true,
+  onFileUploadStart: function(file) {
+    console.log('Starting ' + file.fieldname);
+  },
+  onFileUploadData: function(file, data) {
+    console.log('Got a chunk of data!');
+  },
+  onFileUploadComplete: function(file) {
+    console.log('Completed file!');
+  },
+  onParseStart: function() {
+    console.log('Starting to parse request!');
+  },
+  onParseEnd: function(req, next) {
+    console.log('Done parsing!');
+    next();
+  },
+  onError: function(e, next) {
+    if (e) {
+      console.log(e.stack);
+    }
+    next();
+  }
 });
 
+app.post('/hrdata/import', uploading.any(), function(req, res, next) {
+  console.log(req.files);
+  var volunteer = null;
+  var role = null;
+  var f;
+  var csv = {
+    'volunteer': null,
+    'role': null
+  }
+
+  for (f in req.files) {
+    if (req.files[f].originalname == 'hr_volunteer.csv')
+      csv.volunteer = req.files[f].path;
+    if (req.files[f].originalname)
+      csv.role = req.files[f].path;
+  }
+
+  if (csv.volunteer != null && csv.role != null) {
+    loadcsv.verifyHrData(csv, function(err) {
+      res.end();
+    });
+  } else {
+    	var err = new Error('file name must be volunteer.csv and role.csv');
+      	err.status = 700;
+		next(err);
+    });
+  }
+});
+
+app.get('/hrdata/export', function(req, res, next) {
+  console.log('export ...');
+  res.end();
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
