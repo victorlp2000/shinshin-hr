@@ -74,25 +74,36 @@ app.post('/hrdata/import', uploading.any(), function(req, res, next) {
   for (f in req.files) {
     if (req.files[f].originalname == 'hr_volunteer.csv')
       csv.volunteer = req.files[f].path;
-    if (req.files[f].originalname)
+    if (req.files[f].originalname == 'hr_role.csv')
       csv.role = req.files[f].path;
   }
 
   if (csv.volunteer != null && csv.role != null) {
     loadcsv.verifyHrData(csv, function(err) {
-      res.end();
+      if (err) {
+        var err = new Error('wrong csv files');
+        err.status = 700;
+        next(err);
+      } else {
+        // update into database
+        loadcsv.updateHrData(csv, function(err) {
+          if (err) {
+            throw new Error('error in importing into database');
+          }
+          res.redirect(req.get('referer'));
+        });
+      }
     });
   } else {
-    	var err = new Error('file name must be volunteer.csv and role.csv');
-      	err.status = 700;
-		next(err);
-    });
+  	var err = new Error('file name must be volunteer.csv and role.csv');
+    err.status = 700;
+	  next(err);
   }
 });
 
 app.get('/hrdata/export', function(req, res, next) {
   console.log('export ...');
-  res.end();
+  res.redirect('/api?csv');
 })
 
 // catch 404 and forward to error handler

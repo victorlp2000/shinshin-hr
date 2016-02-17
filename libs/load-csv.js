@@ -164,13 +164,41 @@ function updateHrData(csv, callback) {
 	});
 }
 
+function checkVolunteerData(data) {
+	var i;
+	for (i in data) {
+		if (data[i].length != 6) {
+			console.log('checkVolunteerData: wrong number of columns');
+			return false;
+		}
+	}
+	return true;
+}
+
+function checkRoleData(data) {
+	var i;
+	for (i in data) {
+		if (data[i].length != 3) {
+			console.log('checkRoleData: wrong number of columns');
+			return false;
+		}
+	}
+	return true;
+}
+
 function verifyHrData(csv, callback) {
-	console.log('verifying...');
-	loadCsv(csv.volunteer, function(data) {
-		console.log('check volunteer data');
-		loadCsv(csv.role, function(data) {
-			console.log('check role data');
-			callback(null);
+	console.log('verifying1...' + csv.volunteer);
+	loadCsv(csv.volunteer, function(data1) {
+		if (checkVolunteerData(data1) == false) {
+			callback(new Error('wrong volunteer.csv'));
+		}
+		console.log('verifying2...' + csv.role);
+		loadCsv(csv.role, function(data2) {
+			if (checkRoleData(data2) == false) {
+				callback(new Error('wrong role.csv'));
+			} else {
+				callback(null);
+			}
 		});
 	});
 }

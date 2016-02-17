@@ -86,10 +86,10 @@ function rowToCsv(row) {
 	return line;
 }
 
-function getVolunteerCsvFile(callback) {
+function queryToCsvFile(sql, filename, callback) {
 	console.log('getVolunteerCsvFile');
-	var filename = '/tmp/volunteer.csv';
-	var sql = "SELECT * FROM hr_volunteer";
+	//var filename = '/tmp/hr_volunteer.csv';
+	//var sql = "SELECT * FROM hr_volunteer";
 	var mysql = require('mysql');
 	var conn = mysql.createConnection(mysqlAccount);
 	conn.query(sql, function(err, rows, fields) {
@@ -103,63 +103,45 @@ function getVolunteerCsvFile(callback) {
     		var lines = '';
     		for (r in rows) {
     			var line = rowToCsv(rows[r]);
-    			//console.log(line);
+    			console.log(line);
     			lines += line + '\n';
     		}
-    		var tmpFile = '/tmp/volunteer.csv';
-    		fs.writeFile(tmpFile, lines, function() {
-    			callback(null, tmpFile);
+    		
+    		fs.writeFile(filename, lines, function() {
+    			callback(null);
     		}); 
     		conn.end();
     	}
 	});
 }
 
-function getRoleCsvFile(callback) {
-	console.log('getRoleCsvFile');
-	var filename = '/tmp/role.csv';
-	var sql = "SELECT * FROM hr_role";
-	var mysql = require('mysql');
-	var conn = mysql.createConnection(mysqlAccount);
-	conn.query(sql, function(err, rows, fields) {
-    	if (err) {
-    		console.log(sql);
-    		callback(err);
-    		conn.end();
-    	} else {
-    		//console.log(rows);
-    		var r;
-    		var lines = '';
-    		for (r in rows) {
-    			var line = rowToCsv(rows[r]);
-    			//console.log(line);
-    			lines += line + '\n';
-    		}
-    		var tmpFile = '/tmp/role.csv';
-    		fs.writeFile(tmpFile, lines, function() {
-    			callback(null, tmpFile);
-    		}); 
-    		conn.end();
-    	}
-	});
-}
 
 function getCsvFiles(callback) {
-	var file1, file2;
+	var sql1 = "SELECT * FROM hr_volunteer";
+	var sql2 = "SELECT code, role, volunteer_id FROM hr_role";
+	var file1 = '/tmp/hr_volunteer.csv';
+	var file2 = '/tmp/hr_role.csv';
+
 	console.log('getCsvFiles...');
-	getVolunteerCsvFile(function(err, data) {
-		file1 = data;
-		getRoleCsvFile(function(err, data) {
-			file2 = data;
-			callback(null, [file1, file2]);
-		});
+	queryToCsvFile(sql1, file1, function(err, data) {
+		if (err) {
+			console.log(err);
+			callback(err);
+		} else {
+			queryToCsvFile(sql2, file2, function(err, data) {
+				if (err) {
+					console.log(err);
+					callback(err);
+				} else {
+					callback(null, [file1, file2]);
+				}
+			});
+		}
 	});
 }
 
 module.exports = {
 	getVolunteerRole: getVolunteerRole,
 	getVolunteerPhotoFile: getVolunteerPhotoFile,
-	getVolunteerCsvFile: getVolunteerCsvFile,
-	getRoleCsvFile: getRoleCsvFile,
 	getCsvFiles: getCsvFiles
 };
