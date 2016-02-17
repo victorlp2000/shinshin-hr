@@ -11,6 +11,7 @@ var formidable = require('formidable'),
 
 var routes = require('./routes/index');
 var dbapi = require('./routes/dbapi');
+var hrdata = require('./routes/hrdata');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', dbapi);
+app.use('/hrdata', hrdata);
 
 app.post('/upload', function(req, res) {
   var form = new formidable.IncomingForm();

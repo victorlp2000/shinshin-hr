@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <link rel="stylesheet" href="stylesheets/shinshin.css">
+        <script src="javascripts/shinshin.js"></script>
+
+	<script>
+
+        // initialize content
+	$(document).ready(function() {
+		});
+    
+	</script>
+	<style>
+	.formitem {
+		margin: 4pt;
+	}
+	</style>
+	</head>
+	<body>
+	<div id="header" style="background-color:#0000ff">
+	    <div id="header_left">
+	      	<img src="images/logo_banner.png" alt="logo and banner">
+	    </div>
+	</div>
+	<div style="padding:20pt; font-size: 20pt;">
+	人事部门数据管理
+	</div>
+	<div id="member_container" style="position:relative; padding:20pt">
+		<form action="hrdata/export" method="GET">
+			下载现有的HR数据:<br>
+			<input type="submit" value="Export data" class="formitem" />
+		</form>
+	</div>
+	<p />
+	<div id="member_container" style="position:relative; padding:20pt">
+		<form action="/hrdata/import" method="POST" enctype="multipart/form-data">
+			上传新的HR数据:<br>
+			<input type="file" name="volunteer" class="formitem"><br>
+			<input type="file" name="role" class="formitem"><br>
+			<input type="submit" value="Import data"  class="formitem"/>
+		</form>
+	</div>
+	</body>
+</html>
