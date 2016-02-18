@@ -36,7 +36,7 @@ function getVolunteerRole(callback) {
 	    		callback(err);
 	    		conn.end();
 	    	} else {
-	    		console.log(rows);
+	    		//console.log(rows);
 	    		callback(null, rows);
 	    		conn.end();
 	    	}
@@ -54,7 +54,7 @@ function getVolunteerPhotoFile(callback) {
     		callback(err);
     		conn.end();
     	} else {
-    		console.log(rows);
+    		//console.log(rows);
     		callback(null, rows);
     		conn.end();
     	}
@@ -87,9 +87,7 @@ function rowToCsv(row) {
 }
 
 function queryToCsvFile(sql, filename, callback) {
-	console.log('getVolunteerCsvFile');
-	//var filename = '/tmp/hr_volunteer.csv';
-	//var sql = "SELECT * FROM hr_volunteer";
+	//console.log('getVolunteerCsvFile');
 	var mysql = require('mysql');
 	var conn = mysql.createConnection(mysqlAccount);
 	conn.query(sql, function(err, rows, fields) {
@@ -103,7 +101,7 @@ function queryToCsvFile(sql, filename, callback) {
     		var lines = '';
     		for (r in rows) {
     			var line = rowToCsv(rows[r]);
-    			console.log(line);
+    			//console.log(line);
     			lines += line + '\n';
     		}
     		
@@ -118,11 +116,11 @@ function queryToCsvFile(sql, filename, callback) {
 
 function getCsvFiles(callback) {
 	var sql1 = "SELECT * FROM hr_volunteer";
-	var sql2 = "SELECT code, role, volunteer_id FROM hr_role";
+	var sql2 = "SELECT code, role, volunteer_id FROM hr_role WHERE code NOT LIKE 'Z%'";
 	var file1 = '/tmp/hr_volunteer.csv';
 	var file2 = '/tmp/hr_role.csv';
 
-	console.log('getCsvFiles...');
+	//console.log('getCsvFiles...');
 	queryToCsvFile(sql1, file1, function(err, data) {
 		if (err) {
 			console.log(err);

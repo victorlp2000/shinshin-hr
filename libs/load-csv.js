@@ -97,7 +97,7 @@ function importCsv(conn, csv, sql, preprocess, callback) {
 }
 
 function preProcessVolunteerData(data) {
-	console.log('volunteer data: ' + data.length);
+	//console.log('volunteer data: ' + data.length);
 	var row, col;
 	for (row in data) {
 		for (col in data[row]) {
@@ -108,7 +108,7 @@ function preProcessVolunteerData(data) {
 }
 
 function preProcessRoleData(data) {
-	console.log('role data: ' + data.length);
+	//console.log('role data: ' + data.length);
 	var row, col;
 	for (row in data) {
 		for (col in data[row]) {
@@ -187,12 +187,12 @@ function checkRoleData(data) {
 }
 
 function verifyHrData(csv, callback) {
-	console.log('verifying1...' + csv.volunteer);
+	//console.log('verifying1...' + csv.volunteer);
 	loadCsv(csv.volunteer, function(data1) {
 		if (checkVolunteerData(data1) == false) {
 			callback(new Error('wrong volunteer.csv'));
 		}
-		console.log('verifying2...' + csv.role);
+		//console.log('verifying2...' + csv.role);
 		loadCsv(csv.role, function(data2) {
 			if (checkRoleData(data2) == false) {
 				callback(new Error('wrong role.csv'));

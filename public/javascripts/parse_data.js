@@ -5,7 +5,7 @@
 */
 //(function() {
 	
-	var stringify = function(obj) {
+	function stringify(obj) {
 		return JSON.stringify(obj, null, 2);
 	}
 
@@ -29,7 +29,7 @@
 		code: single char: as category name
 			  single char + '#': code group widths
 	*/
-	var parseAssignData = function(data) {
+	function parseAssignData(data) {
 		var index;
 		var items = [];		// return 
 		var currentItem;
@@ -75,7 +75,7 @@
 			...
 		</ul>
 	*/
-	var generateTabs = function(items) {
+	function generateTabs(items) {
 		var html = '<ul id="tabmenu">\n';
 		for (var i in items) {
 			var item = items[i];
@@ -93,7 +93,7 @@
 			<li><a id="{CODE}" class="member">title</a></li>
 		</ul>
 	*/
-	var generateMemberList = function(items) {
+	function generateMemberList(items) {
 		var indent = '';
 		/**
             returns number of sections in the code string
@@ -104,7 +104,7 @@
             for code = '12345678', sections will be: 1 23 456 78
             the returned number will be 4
         */
-        var getNumberOfSections = function(code, codeWidths) {
+        function getNumberOfSections(code, codeWidths) {
             var code = code.trim();
             var codeLength = code.length;
             var groups = 0;
@@ -120,7 +120,7 @@
             combine needed fields values to generate
             text string for the list
         */
-        var getMemberTitle = function(member) {
+        function getMemberTitle(member) {
             var title = '';
             var separator = '';
             var fields = [
@@ -142,7 +142,9 @@
         /**
             generate a list item 
         */
-        var addList = function(text, id) {
+        function addList(text, id) {
+        	if (text == null || text == '')
+        		return '';
             // with specific class (member), we can set attr by using jquery
             var str = indent + '<li><a id="' + id +
                       '" class="member">' +
@@ -153,7 +155,7 @@
         /**
             open a new level of list item
         */
-        var openList = function(text, id) {
+        function openList(text, id) {
             var str = indent
             var str = indent + '<ul>\n';
             indent += ' ';
@@ -164,7 +166,7 @@
         /**
             close the current level of the list
         */
-        var closeList = function(text, id) {
+        function closeList(text, id) {
             indent = indent.substring(1);
             var str = indent + '</ul>\n';
             if (text != null) {
@@ -221,7 +223,7 @@
 	    }
     }
 
-    var generatePanels = function(items) {
+    function generatePanels(items) {
     	var html = '';
     	generateMemberList(items);
     	for (var i in items) {
@@ -232,7 +234,7 @@
     	return html;
     }
 
-    var findMemberById = function(id) {
+    function findMemberById(id) {
     	if (!items) {
     		console.log('did not find global items');
     		return null;
