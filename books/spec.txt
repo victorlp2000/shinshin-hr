@@ -1,0 +1,7 @@
+input:
+	filename - csv file
+	header - first line is header or not
+	column - D
+	list - array of numbers
+
+node distribute.js
