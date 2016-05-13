@@ -35,7 +35,7 @@ app.use('/api', dbapi);
 //app.use('/hrdata', hrdata);
 
 var uploading = multer({
-  dest: '/tmp',
+  dest: '/tmp/shinshinhr',
   inMemory: true,
   onFileUploadStart: function(file) {
     console.log('Starting ' + file.fieldname);
@@ -72,10 +72,12 @@ app.post('/hrdata/import', uploading.any(), function(req, res, next) {
   }
 
   for (f in req.files) {
-    if (req.files[f].originalname == 'hr_volunteer.csv')
+    if (req.files[f].originalname == 'hr_volunteer.csv') {
       csv.volunteer = req.files[f].path;
-    if (req.files[f].originalname == 'hr_role.csv')
+    }
+    if (req.files[f].originalname == 'hr_role.csv') {
       csv.role = req.files[f].path;
+    }
   }
 
   if (csv.volunteer != null && csv.role != null) {
@@ -88,16 +90,17 @@ app.post('/hrdata/import', uploading.any(), function(req, res, next) {
         // update into database
         loadcsv.updateHrData(csv, function(err) {
           if (err) {
-            throw new Error('error in importing into database');
+            next(err);
+          } else {
+            res.redirect(req.get('referer'));
           }
-          res.redirect(req.get('referer'));
         });
       }
     });
   } else {
-  	var err = new Error('file name must be volunteer.csv and role.csv');
+    var err = new Error('file name must be volunteer.csv and role.csv');
     err.status = 700;
-	  next(err);
+    next(err);
   }
 });
 
