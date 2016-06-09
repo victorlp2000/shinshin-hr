@@ -34,7 +34,7 @@
                     //console.log(html);
 		            $('#tab_menu').html(html);
 
-                    // generate member list 
+                    // generate member list
                     html = generatePanels(items);
                     //console.log(html);
 		            $('#members').html(html);
@@ -51,15 +51,17 @@
 		$(window).resize(function() {
 			setPanelSize();
 		});
-    
+
 		</script>
 	</head>
 	<body>
+		<!-- remove header: used in iframe
 		<div id="header" style="background-color:#0000ff">
 		    <div id="header_left">
 		      	<img src="images/logo_banner.png" alt="logo and banner">
 		    </div>
 		</div>
+		-->
 		<div id="tabs">
 		    <div id="tab_menu">
 		    </div>

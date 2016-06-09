@@ -7,7 +7,7 @@ body {
 
   /* cursor on the item */
   .mouseover_item {
-    background-color: green;
+    /* background-color: green; */
   }
 
   /* the item is active (member info is showing up) */
@@ -17,14 +17,12 @@ body {
 
   /* header */
 	#header {
-		background: transparent url('../images/header-bgs.jpg') scroll no-repeat;
 		margin:0;
     padding:0px 0px 0px 0px;
 	}
 
   #tab_panel {
     position: relative;
-    background: url('../images/body-bgss.jpg');
     padding-left: 14px;
     padding-top: 10px;
     padding-right: 10px;
@@ -38,10 +36,9 @@ body {
     margin-right: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
-    border: 2px solid green;
-    border-radius: 10px;
+    border: 2px solid lightgray;
+    border-radius: 6px;
     position: absolute;
-    background: url('../images/paper.png');
   }
 
   #members {
@@ -58,11 +55,11 @@ body {
 
   /* active tab background */
   .ui-tabs .ui-tabs-nav .ui-state-active {
-    background: green;
+    /* background: green; */
   }
   /* active tab text color */
   .ui-tabs .ui-tabs-nav .ui-state-active .ui-tabs-anchor {
-    color: #ffffff;
+    color: #000000;
     font-weight: bold;
   }
 
@@ -80,8 +77,8 @@ body {
     padding: 1em;
     width: 0px;
     height: 0px;
-    border: 2px solid green;
-    border-radius: 10px;
+    border: 2px solid lightgray;
+    border-radius: 6px;
     background: #ffffff;
   }
 
