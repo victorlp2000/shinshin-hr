@@ -15,11 +15,14 @@ body {
     background-color: yellow;
   }
 
+
   /* header */
-	#header {
-		margin:0;
-    padding:0px 0px 0px 0px;
-	}
+  #header {
+    margin-top:20px;
+    margin-bottom:20px;
+    background: #ffffff;
+    padding:0px;
+  }
 
   #tab_panel {
     position: relative;
