@@ -1,78 +1,80 @@
 <!DOCTYPE html>
 <html>
-	<head>
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-		<script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <head>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 
-        <link rel="stylesheet" href="stylesheets/shinshin.css">
+    <link rel="stylesheet" href="stylesheets/shinshin.css">
 
-		<script src="javascripts/parse_data.js"></script>
-        <script src="javascripts/shinshin.js"></script>
+    <script src="javascripts/parse_data.js"></script>
+    <script src="javascripts/shinshin.js"></script>
 
-		<script>
-        // structured hr_role data, see parse_assign.js for detail
-		var items;
+    <script>
+    // structured hr_role data, see parse_assign.js for detail
+    var items;
 
-        var mouseoverItem;    // mouse is over on it.
-                              // the item will become activeItem after a
-                              // shot delay, or until get click
-        var activeItem;       // detail info is showing for the item
-        var timerDelayActive = null;  	// mouseover will become active with short delay
-        								// for mouse passthrough items
+    var mouseoverItem;    // mouse is over on it.
+                          // the item will become activeItem after a
+                          // shot delay, or until get click
+    var activeItem;       // detail info is showing for the item
+    var timerDelayActive = null;    // mouseover will become active with short delay
+                                    // for mouse passthrough items
 
-        // initialize content
-		$(document).ready(function() {
-            // load json data from the server
-		    $.get("api?role", function(data, status){
-		    	if (status === "success") {
-		            //console.log(JSON.stringify(data, null, 2));
-		            items = parseAssignData(data);
+    // initialize content
+    $(document).ready(function() {
+        // load json data from the server
+        $.get("api?role", function(data, status){
+            if (status === "success") {
+                //console.log(JSON.stringify(data, null, 2));
+                items = parseAssignData(data);
 //console.log(items);
-		            // generate tabs
-                    var html = generateTabs(items);
-                    //console.log(html);
-		            $('#tab_menu').html(html);
+                // generate tabs
+                var html = generateTabs(items);
+                //console.log(html);
+                $('#tab_menu').html(html);
 
-                    // generate member list
-                    html = generatePanels(items);
-                    //console.log(html);
-		            $('#members').html(html);
+                // generate member list
+                html = generatePanels(items);
+                //console.log(html);
+                $('#members').html(html);
 
-                    // setup tab menu
-                    setupMenuAndPanels();
+                // setup tab menu
+                setupMenuAndPanels();
 
-                    // set panel size
-                    setPanelSize();
-		    	}
-		    });
-		});
+                // set panel size
+                setPanelSize();
+            } else {
+                alert(status + " api?role");
+            }
+        });
+    });
 
-		$(window).resize(function() {
-			setPanelSize();
-		});
+    $(window).resize(function() {
+        setPanelSize();
+    });
 
-		</script>
-	</head>
-	<body>
-		<!-- remove header: used in iframe
-		<div id="header" style="background-color:#0000ff">
-		    <div id="header_left">
-		      	<img src="images/logo_banner.png" alt="logo and banner">
-		    </div>
-		</div>
-		-->
-		<div id="tabs">
-		    <div id="tab_menu">
-		    </div>
-		    <div id="tab_panel">
-		    	<div id="member_container">
-                	<div id="members">
-                	</div>
+    </script>
+    </head>
+    <body>
+        <!-- remove header: used in iframe
+        <div id="header" style="background-color:#0000ff">
+            <div id="header_left">
+                <img src="images/logo_banner.png" alt="logo and banner">
+            </div>
+        </div>
+        -->
+        <div id="tabs">
+            <div id="tab_menu">
+            </div>
+            <div id="tab_panel">
+                <div id="member_container">
+                    <div id="members">
+                    </div>
                 </div>
-		    </div>
-		    </div>
-		</div>
+            </div>
+            </div>
+        </div>
         <div id="member_info_container">
             <div id="member_info">
                 <div id="member_title"></div>
@@ -80,5 +82,5 @@
                 <span id="member_description"></span>
             </div>
         </div>
-	</body>
+    </body>
 </html>
