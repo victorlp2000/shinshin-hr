@@ -9,6 +9,7 @@
 
     <script src="javascripts/parse_data.js"></script>
     <script src="javascripts/shinshin.js"></script>
+    <script src="javascripts/apidata.js"></script>
 
     <script>
     // structured hr_role data, see parse_assign.js for detail
@@ -24,30 +25,23 @@
     // initialize content
     $(document).ready(function() {
         // load json data from the server
-        $.get("api?role", function(data, status){
-            if (status === "success") {
-                //console.log(JSON.stringify(data, null, 2));
-                items = parseAssignData(data);
+        items = parseAssignData(data);
 //console.log(items);
-                // generate tabs
-                var html = generateTabs(items);
-                //console.log(html);
-                $('#tab_menu').html(html);
+        // generate tabs
+        var html = generateTabs(items);
+        //console.log(html);
+        $('#tab_menu').html(html);
 
-                // generate member list
-                html = generatePanels(items);
-                //console.log(html);
-                $('#members').html(html);
+        // generate member list
+        html = generatePanels(items);
+        //console.log(html);
+        $('#members').html(html);
 
-                // setup tab menu
-                setupMenuAndPanels();
+        // setup tab menu
+        setupMenuAndPanels();
 
-                // set panel size
-                setPanelSize();
-            } else {
-                alert(status + " api?role");
-            }
-        });
+        // set panel size
+        setPanelSize();
     });
 
     $(window).resize(function() {
